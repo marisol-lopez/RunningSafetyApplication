@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">RunningSafetyApplication</string>
+    <string name="app_name">RunningApplication2</string>
+    <string name="route_form_field">Route</string>
+    <string name="time_form_field">Time</string>
+    <string name="contact_form_field">Contact</string>
+    <string name="start_run_button">Start Run</string>
 </resources>
