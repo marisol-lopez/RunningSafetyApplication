@@ -36,9 +36,12 @@ public class MainActivity extends AppCompatActivity {
         inputValues.add(routeFieldInput);
         inputValues.add(timeFieldInput);
         inputValues.add(contactFieldInput);
-        intent.putStringArrayListExtra("array", inputValues);
 
+        intent.putStringArrayListExtra("array", inputValues);
         startActivity(intent);
+
+
+
     }
 
 }
