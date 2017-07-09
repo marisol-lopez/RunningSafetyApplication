@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnCamera = (Button) findViewById(R.id.btnCamera);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView2);
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
