@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
     public void startRun(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
 
+        EditText usernameField = (EditText) findViewById(R.id.usernameForm);
+        String usernameFieldInput = usernameField.getText().toString();
+
         // need to create variable and store the view/widget we are trying to access
         EditText routeField = (EditText) findViewById(R.id.routeForm);
 
@@ -122,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         inputValues.add(routeFieldInput);
         inputValues.add(timeFieldInput);
         inputValues.add(contactFieldInput);
+        inputValues.add(usernameFieldInput);
 
         intent.putStringArrayListExtra("array", inputValues);
         startActivity(intent);
