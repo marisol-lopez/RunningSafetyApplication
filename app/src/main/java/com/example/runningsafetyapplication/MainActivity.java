@@ -122,10 +122,12 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> inputValues = new ArrayList();
 
+        inputValues.add(usernameFieldInput);
+
         inputValues.add(routeFieldInput);
         inputValues.add(timeFieldInput);
         inputValues.add(contactFieldInput);
-        inputValues.add(usernameFieldInput);
+
 
         intent.putStringArrayListExtra("array", inputValues);
         startActivity(intent);
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 minuteChosen = Integer.toString(minute);
                 minuteChosen = "0" + minuteChosen;
             } else {
-                minuteChosen = Integer.toString(hourOfDay);
+                minuteChosen = Integer.toString(minute);
             }
             editText.setText(hourChosen + ":" + minuteChosen + am_pm);
 //            pickDate.setVisibility(View.GONE);

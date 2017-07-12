@@ -18,6 +18,9 @@ public class DisplayMessageActivity extends AppCompatActivity {
         TextView textView1 = (TextView) findViewById(R.id.textView1);
         TextView textView2 = (TextView) findViewById(R.id.textView2);
         TextView textView3 = (TextView) findViewById(R.id.textView3);
+        TextView textView4 = (TextView) findViewById(R.id.textView4);
+
+
 
         ArrayList<String> inputValues = new ArrayList();
         inputValues = intent.getStringArrayListExtra("array");
@@ -25,6 +28,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
         textView1.setText(inputValues.get(0));
         textView2.setText(inputValues.get(1));
         textView3.setText(inputValues.get(2));
+        textView4.setText(inputValues.get(3));
     }
 
 
