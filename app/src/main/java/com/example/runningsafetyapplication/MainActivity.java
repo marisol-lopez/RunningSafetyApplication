@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 MyTimePicker timePicker = new MyTimePicker();
                 new TimePickerDialog(MainActivity.this, timePicker, c
                         .get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show();
-//                System.out.println("*******");
-//                System.out.println(Calendar.HOUR_OF_DAY);
-//                System.out.println("*******");
-
             }
         });
 
