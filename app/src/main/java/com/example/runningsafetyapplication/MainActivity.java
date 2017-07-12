@@ -2,7 +2,10 @@ package com.example.runningsafetyapplication;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
 //  ImageView imageView;
     Calendar c = Calendar.getInstance();
+    private final int PICK_CONTACT = 1;
+
 
 
     @Override
@@ -46,6 +52,41 @@ public class MainActivity extends AppCompatActivity {
 //                startActivityForResult(intent,0);
 //            }
 //        });
+    }
+
+    public void callContacts(View v) {
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(intent, PICK_CONTACT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        EditText contactText = (EditText) findViewById(R.id.contactForm);
+
+        if(requestCode == PICK_CONTACT) {
+            if(resultCode == AppCompatActivity.RESULT_OK) {
+                String phoneNo = null ;
+                String name = null;
+                Uri contactData = data.getData();
+                Cursor c = getContentResolver().query(contactData, null, null, null, null);
+                c.moveToFirst();
+
+                int  phoneIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int  nameIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+                phoneNo = c.getString(phoneIndex);
+//                Toast.makeText(MainActivity.this, "Number="+phoneNo, Toast.LENGTH_LONG).show();
+                name = c.getString(nameIndex);
+                contactText.setText(name + " " + phoneNo);
+
+
+//                if(c.moveToFirst()){
+//                    String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+//                    Toast.makeText(this, "You picked:" + name, Toast.LENGTH_LONG).show();
+//                }
+            }
+        }
     }
 
 
