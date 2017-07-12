@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 am_pm = "AM";
             } else {
                 am_pm = "AM";
+                hourChosen = Integer.toString(hourOfDay);
                 if(hourOfDay < 10) {
                     hourChosen = Integer.toString(hourOfDay);
                     hourChosen = "0" + hourChosen;
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 minuteChosen = Integer.toString(minute);
                 minuteChosen = "0" + minuteChosen;
             } else {
-                minuteChosen = Integer.toString(minute);
+                minuteChosen = Integer.toString(hourOfDay);
             }
             editText.setText(hourChosen + ":" + minuteChosen + am_pm);
 //            pickDate.setVisibility(View.GONE);
