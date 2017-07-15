@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 int  nameIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
 
                 phoneNo = c.getString(phoneIndex);
-//                Toast.makeText(MainActivity.this, "Number="+phoneNo, Toast.LENGTH_LONG).show();
                 name = c.getString(nameIndex);
                 contactText.setText(name + " " + phoneNo);
 
@@ -103,15 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void startRun(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-
         EditText usernameField = (EditText) findViewById(R.id.usernameForm);
         String usernameFieldInput = usernameField.getText().toString();
 
-        // need to create variable and store the view/widget we are trying to access
         EditText routeField = (EditText) findViewById(R.id.routeForm);
-
-        // create a string variable and store what is in view.widget in it
         String routeFieldInput = routeField.getText().toString();
 
         EditText timeField = (EditText) findViewById(R.id.timeForm);
@@ -123,20 +117,18 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> inputValues = new ArrayList();
 
         inputValues.add(usernameFieldInput);
-
         inputValues.add(routeFieldInput);
         inputValues.add(timeFieldInput);
         inputValues.add(contactFieldInput);
 
-
-        intent.putStringArrayListExtra("array", inputValues);
-        startActivity(intent);
+        System.out.println("&&&&&&");
+        System.out.println(inputValues);
+        System.out.println("&&&&&&");
 
     }
 
     class MyTimePicker implements TimePickerDialog.OnTimeSetListener {
         EditText editText = (EditText) findViewById(R.id.timeForm);
-
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -175,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 minuteChosen = Integer.toString(minute);
             }
             editText.setText(hourChosen + ":" + minuteChosen + am_pm);
-//            pickDate.setVisibility(View.GONE);
-
         }
     }
 
