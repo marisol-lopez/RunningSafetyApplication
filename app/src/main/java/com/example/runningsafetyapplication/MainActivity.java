@@ -16,8 +16,15 @@ import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void startRun(View view) {
+    public void startRun(View view) throws JSONException {
         EditText usernameField = (EditText) findViewById(R.id.usernameForm);
         String usernameFieldInput = usernameField.getText().toString();
 
@@ -113,17 +120,23 @@ public class MainActivity extends AppCompatActivity {
 
         EditText contactField = (EditText) findViewById(R.id.contactForm);
         String contactFieldInput = contactField.getText().toString();
+        String[] splitContactString = contactFieldInput.split("\\s+");
+        String name = splitContactString[0] + " " + splitContactString[1];
+        String contactPhoneNumber = splitContactString[2];
 
-        ArrayList<String> inputValues = new ArrayList();
-
-        inputValues.add(usernameFieldInput);
-        inputValues.add(routeFieldInput);
-        inputValues.add(timeFieldInput);
-        inputValues.add(contactFieldInput);
-
-        System.out.println("&&&&&&");
-        System.out.println(inputValues);
-        System.out.println("&&&&&&");
+    JSONObject json = new JSONObject();
+    JSONArray inputValues = new JSONArray();
+        JSONObject value = new JSONObject();
+        value.put("username", usernameFieldInput);
+        value.put("route", routeFieldInput);
+        value.put("end_time", timeFieldInput);
+        value.put("contact_name", name);
+        value.put("contact_phone_number", contactPhoneNumber);
+    inputValues.put(value);
+        json.put("form_data", inputValues);
+        System.out.println("$$$$$$");
+        System.out.println(json.toString());
+        System.out.println("$$$$$$");
 
     }
 
