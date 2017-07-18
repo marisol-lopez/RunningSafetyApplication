@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,26 +22,48 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.channels.AsynchronousChannelGroup;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import android.os.AsyncTask;
+
+import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity {
 
-//  ImageView imageView;
+    EditText usernameField, routeField, timeField, contactField;
+    String usernameFieldInput, routeFieldInput, timeFieldInput, contactName, contactPhoneNumber;
+    JSONObject value;
+    private static final String TAG = "MainActivity";
+
+    //  ImageView imageView;
     Calendar c = Calendar.getInstance();
     private final int PICK_CONTACT = 1;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        usernameField = (EditText) findViewById(R.id.usernameForm);
+        routeField = (EditText) findViewById(R.id.routeForm);
+        timeField = (EditText) findViewById(R.id.timeForm);
+        contactField = (EditText) findViewById(R.id.contactForm);
         EditText timeField = (EditText) findViewById(R.id.timeForm);
         timeField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,16 +95,16 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         EditText contactText = (EditText) findViewById(R.id.contactForm);
 
-        if(requestCode == PICK_CONTACT) {
-            if(resultCode == AppCompatActivity.RESULT_OK) {
-                String phoneNo = null ;
+        if (requestCode == PICK_CONTACT) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
+                String phoneNo = null;
                 String name = null;
                 Uri contactData = data.getData();
                 Cursor c = getContentResolver().query(contactData, null, null, null, null);
                 c.moveToFirst();
 
-                int  phoneIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                int  nameIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                int phoneIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int nameIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
 
                 phoneNo = c.getString(phoneIndex);
                 name = c.getString(nameIndex);
@@ -104,41 +128,150 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
+//    public JSONObject startRun(View view) throws IOException, JSONException {
+//        usernameFieldInput = usernameField.getText().toString();
+//        routeFieldInput = routeField.getText().toString();
+//        timeFieldInput = timeField.getText().toString();
+//        String contactFieldInput = contactField.getText().toString();
+//
+//        String[] splitContactString = contactFieldInput.split("\\s+");
+//        contactName = splitContactString[0] + " " + splitContactString[1];
+//        contactPhoneNumber = splitContactString[2];
+//
+//        JSONObject value = new JSONObject();
+//        value.put("username", usernameFieldInput);
+//        value.put("route", routeFieldInput);
+//        value.put("end_time", timeFieldInput);
+//        value.put("contact_name", contactName);
+//        value.put("contact_phone_number", contactPhoneNumber);
+//
+//        System.out.println("$$$$$$");
+//        System.out.println(value.getString("username"));
+//        System.out.println("$$$$$$");
+//        return value;
+//    }
 
 
 
 
-    public void startRun(View view) throws JSONException {
-        EditText usernameField = (EditText) findViewById(R.id.usernameForm);
-        String usernameFieldInput = usernameField.getText().toString();
-
-        EditText routeField = (EditText) findViewById(R.id.routeForm);
-        String routeFieldInput = routeField.getText().toString();
-
-        EditText timeField = (EditText) findViewById(R.id.timeForm);
-        String timeFieldInput = timeField.getText().toString();
-
-        EditText contactField = (EditText) findViewById(R.id.contactForm);
+    public void startRun(View v) {
+        usernameFieldInput = usernameField.getText().toString();
+        routeFieldInput = routeField.getText().toString();
+        timeFieldInput = timeField.getText().toString();
         String contactFieldInput = contactField.getText().toString();
+
         String[] splitContactString = contactFieldInput.split("\\s+");
-        String name = splitContactString[0] + " " + splitContactString[1];
-        String contactPhoneNumber = splitContactString[2];
+        contactName = splitContactString[0] + " " + splitContactString[1];
+        contactPhoneNumber = splitContactString[2];
 
-    JSONObject json = new JSONObject();
-    JSONArray inputValues = new JSONArray();
         JSONObject value = new JSONObject();
-        value.put("username", usernameFieldInput);
-        value.put("route", routeFieldInput);
-        value.put("end_time", timeFieldInput);
-        value.put("contact_name", name);
-        value.put("contact_phone_number", contactPhoneNumber);
-    inputValues.put(value);
-        json.put("form_data", inputValues);
-        System.out.println("$$$$$$");
-        System.out.println(json.toString());
-        System.out.println("$$$$$$");
 
+        try {
+            value.put("username", usernameFieldInput);
+            value.put("location", routeFieldInput);
+            value.put("end_time", timeFieldInput);
+            value.put("contact_name", contactName);
+            value.put("contact_phone_number", contactPhoneNumber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (value.length() > 0) {
+            new SendJsonDataToServer().execute(String.valueOf(value));
+//            #call to async class
+        }
     }
+    class SendJsonDataToServer extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String JsonResponse = null;
+            String JsonDATA = params[0];
+            System.out.println("%%%%%");
+            System.out.println(JsonDATA);
+            System.out.println("%%%%%");
+
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL("http://10.0.2.2:3000/runs?");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                // is output buffer writer
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
+//set headers and method
+                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+                writer.write(JsonDATA);
+
+// json data
+                writer.close();
+                InputStream inputStream = urlConnection.getInputStream();
+//input stream
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null)
+                    buffer.append(inputLine + "\n");
+                if (buffer.length() == 0) {
+                    // Stream was empty. No point in parsing.
+                    return null;
+                }
+                JsonResponse = buffer.toString();
+//response data
+                System.out.println("*****");
+                System.out.println(JsonResponse);
+                System.out.println("******");
+                Log.e(TAG, JsonResponse);
+                try {
+//send to post execute
+                    return JsonResponse;
+                } catch (Error e) {
+                    e.printStackTrace();
+                }
+                return null;
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(TAG, "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+    }
+
+
+//    String parameters = "?" + "username=" + value.getString("username") + "&" + "location=" + value.getString("route") + "&" + "end_time=" + "&" + value.getString("end_time") + "&" + "contact_name=" + value.getString("contact_name") + "&" + "contact_phone_number=" + value.getString("contact_phone_number");
+//    URL url = new URL("http://10.0.2.2:3000/runs");
+//    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setDoOutput(true);
+//        connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+//        connection.setRequestMethod("POST");
+//
+//    OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+//        out.write(parameters);
+//        out.flush();
+//        out.close();
+//        connection.disconnect();
 
     class MyTimePicker implements TimePickerDialog.OnTimeSetListener {
         EditText editText = (EditText) findViewById(R.id.timeForm);
@@ -151,15 +284,15 @@ public class MainActivity extends AppCompatActivity {
             String hourChosen = "";
             String minuteChosen = "";
 
-            if(hourOfDay > 12) {
+            if (hourOfDay > 12) {
                 hourChosen = Integer.toString(hourOfDay - 12);
                 am_pm = "PM";
-                if((hourOfDay - 12) < 10) {
+                if ((hourOfDay - 12) < 10) {
                     hourChosen = Integer.toString(hourOfDay - 12);
                     hourChosen = "0" + hourChosen;
                     am_pm = "PM";
                 }
-            } else if(hourOfDay == 12) {
+            } else if (hourOfDay == 12) {
                 hourChosen = Integer.toString(12);
                 am_pm = "PM";
             } else if (hourOfDay == 0) {
@@ -168,12 +301,12 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 am_pm = "AM";
                 hourChosen = Integer.toString(hourOfDay);
-                if(hourOfDay < 10) {
+                if (hourOfDay < 10) {
                     hourChosen = Integer.toString(hourOfDay);
                     hourChosen = "0" + hourChosen;
                 }
             }
-            if(minute < 10) {
+            if (minute < 10) {
                 minuteChosen = Integer.toString(minute);
                 minuteChosen = "0" + minuteChosen;
             } else {
@@ -184,5 +317,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
 
 
