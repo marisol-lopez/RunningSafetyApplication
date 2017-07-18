@@ -110,11 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 name = c.getString(nameIndex);
                 contactText.setText(name + " " + phoneNo);
 
-
-//                if(c.moveToFirst()){
-//                    String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-//                    Toast.makeText(this, "You picked:" + name, Toast.LENGTH_LONG).show();
-//                }
             }
         }
     }
@@ -127,32 +122,6 @@ public class MainActivity extends AppCompatActivity {
 //        imageView.setImageBitmap(bitmap);
 //
 //    }
-
-//    public JSONObject startRun(View view) throws IOException, JSONException {
-//        usernameFieldInput = usernameField.getText().toString();
-//        routeFieldInput = routeField.getText().toString();
-//        timeFieldInput = timeField.getText().toString();
-//        String contactFieldInput = contactField.getText().toString();
-//
-//        String[] splitContactString = contactFieldInput.split("\\s+");
-//        contactName = splitContactString[0] + " " + splitContactString[1];
-//        contactPhoneNumber = splitContactString[2];
-//
-//        JSONObject value = new JSONObject();
-//        value.put("username", usernameFieldInput);
-//        value.put("route", routeFieldInput);
-//        value.put("end_time", timeFieldInput);
-//        value.put("contact_name", contactName);
-//        value.put("contact_phone_number", contactPhoneNumber);
-//
-//        System.out.println("$$$$$$");
-//        System.out.println(value.getString("username"));
-//        System.out.println("$$$$$$");
-//        return value;
-//    }
-
-
-
 
     public void startRun(View v) {
         usernameFieldInput = usernameField.getText().toString();
@@ -258,20 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
-//    String parameters = "?" + "username=" + value.getString("username") + "&" + "location=" + value.getString("route") + "&" + "end_time=" + "&" + value.getString("end_time") + "&" + "contact_name=" + value.getString("contact_name") + "&" + "contact_phone_number=" + value.getString("contact_phone_number");
-//    URL url = new URL("http://10.0.2.2:3000/runs");
-//    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setDoOutput(true);
-//        connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-//        connection.setRequestMethod("POST");
-//
-//    OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-//        out.write(parameters);
-//        out.flush();
-//        out.close();
-//        connection.disconnect();
 
     class MyTimePicker implements TimePickerDialog.OnTimeSetListener {
         EditText editText = (EditText) findViewById(R.id.timeForm);
