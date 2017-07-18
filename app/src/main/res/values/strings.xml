@@ -5,4 +5,5 @@
     <string name="contact_form_field">Contact</string>
     <string name="start_run_button">Start Run</string>
     <string name="username_form_field">Username</string>
+    <string name="end_run_button">End Run</string>
 </resources>

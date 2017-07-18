@@ -148,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
             new SendJsonDataToServer().execute(String.valueOf(value));
 //            #call to async class
         }
+        Intent intent = new Intent(this, EndRunActivity.class);
+        startActivity(intent);
     }
     class SendJsonDataToServer extends AsyncTask<String, Void, String> {
         @Override

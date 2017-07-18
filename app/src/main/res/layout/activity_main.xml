@@ -128,7 +128,7 @@
         android:id="@+id/startRunButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/start_run_button"
+        android:text="@string/start_run_button"
         android:onClick="startRun"/>
 
 </LinearLayout>
