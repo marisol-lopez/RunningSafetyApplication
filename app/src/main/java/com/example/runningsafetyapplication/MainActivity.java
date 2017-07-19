@@ -148,7 +148,9 @@ public class MainActivity extends AppCompatActivity {
             new SendJsonDataToServer().execute(String.valueOf(value));
 //            #call to async class
         }
+
         Intent intent = new Intent(this, EndRunActivity.class);
+        intent.putExtra("jsonObject", value.toString());
         startActivity(intent);
     }
     class SendJsonDataToServer extends AsyncTask<String, Void, String> {
@@ -156,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String JsonResponse = null;
             String JsonDATA = params[0];
-            System.out.println("%%%%%");
-            System.out.println(JsonDATA);
-            System.out.println("%%%%%");
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -194,9 +193,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JsonResponse = buffer.toString();
 //response data
-                System.out.println("*****");
-                System.out.println(JsonResponse);
-                System.out.println("******");
                 Log.e(TAG, JsonResponse);
                 try {
 //send to post execute
