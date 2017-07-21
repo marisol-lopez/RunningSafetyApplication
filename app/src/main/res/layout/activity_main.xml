@@ -38,13 +38,20 @@
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
-        <EditText
-            android:id="@+id/routeForm"
-            android:layout_width="wrap_content"
+        <!--<EditText-->
+            <!--android:id="@+id/routeForm"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:ems="10"-->
+            <!--android:inputType="textPersonName"-->
+            <!--android:hint="@string/route_form_field" />-->
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/route_form_field" />
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            />
     </LinearLayout>
 
     <LinearLayout

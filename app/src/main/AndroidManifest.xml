@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDR5IBiOoOnVCv0keUIEw-_74lh4QXqRc8"/>
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity">

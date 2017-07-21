@@ -1,5 +1,6 @@
 package com.example.runningsafetyapplication;
 
+import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.channels.AsynchronousChannelGroup;
@@ -42,6 +44,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,11 +52,18 @@ import java.util.Map;
 import android.os.AsyncTask;
 
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
+
 import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText usernameField, routeField, timeField, contactField;
+    EditText usernameField, timeField, contactField;
+
     String usernameFieldInput, routeFieldInput, timeFieldInput, contactName, contactPhoneNumber;
     JSONObject value;
     private static final String TAG = "MainActivity";
@@ -68,10 +78,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         usernameField = (EditText) findViewById(R.id.usernameForm);
-        routeField = (EditText) findViewById(R.id.routeForm);
+//        routeField = (Fragment) findViewById(R.id.routeForm);
         timeField = (EditText) findViewById(R.id.timeForm);
         contactField = (EditText) findViewById(R.id.contactForm);
         EditText timeField = (EditText) findViewById(R.id.timeForm);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+//                LatLng coordinates = place.getLatLng();
+//                String mapsUrlString = "https://www.google.com/maps/search/?api=1&query=";
+                String mapsUrlString = "https://www.google.com/maps/search/?api=1&query=";
+                String query = URLEncoder.encode(place.getName().toString());
+//
+//                String longitude = String.valueOf(coordinates.longitude);
+//                String latitude = String.valueOf(coordinates.latitude);
+//                routeFieldInput = mapsUrlString + latitude + "," + longitude;
+
+                routeFieldInput = mapsUrlString + query;
+                try {
+                    URL mapsUrl = new URL(routeFieldInput);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("%%%%%%");
+                System.out.println(routeFieldInput);
+                System.out.println("%%%%%%");
+
+//                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
         timeField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void startRun(View v) {
         usernameFieldInput = usernameField.getText().toString();
-        routeFieldInput = routeField.getText().toString();
         timeFieldInput = timeField.getText().toString();
         String contactFieldInput = contactField.getText().toString();
 
@@ -149,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
             value.put("end_time", timeFieldInput);
             value.put("contact_name", contactName);
             value.put("contact_phone_number", contactPhoneNumber);
+            System.out.println("********");
+            System.out.println(value);
+            System.out.println("&&&&&&&&");
         } catch (JSONException e) {
             e.printStackTrace();
         }
