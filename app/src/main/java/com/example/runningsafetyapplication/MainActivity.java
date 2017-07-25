@@ -59,6 +59,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 
 import static android.R.attr.value;
+import static com.example.runningsafetyapplication.R.id.imageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject value;
     private static final String TAG = "MainActivity";
 
-    //  ImageView imageView;
+//      ImageView imageView;
     Calendar c = Calendar.getInstance();
     private final int PICK_CONTACT = 1;
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 //        routeField = (Fragment) findViewById(R.id.routeForm);
         timeField = (EditText) findViewById(R.id.timeForm);
         contactField = (EditText) findViewById(R.id.contactForm);
-        EditText timeField = (EditText) findViewById(R.id.timeForm);
+//        EditText timeField = (EditText) findViewById(R.id.timeForm);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -148,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+//        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+//        imageView.setImageBitmap(bitmap);
+
         EditText contactText = (EditText) findViewById(R.id.contactForm);
 
         if (requestCode == PICK_CONTACT) {
@@ -219,7 +224,10 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try {
-                URL url = new URL("http://10.0.2.2:3000/runs?");
+                URL url = new URL("http://runsafe-app.vcc9pwmvpq.us-west-2.elasticbeanstalk.com/runs?");
+                System.out.println("&&&&&&^^^^");
+                System.out.println(url);
+                System.out.println("&&&&&&^^^^");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 // is output buffer writer
