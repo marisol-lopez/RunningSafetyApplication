@@ -5,6 +5,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,9 +15,10 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher_round"/>
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_person_add_black_24dp"/>
 
         <EditText
             android:id="@+id/usernameForm"
@@ -27,36 +30,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:padding="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_mylocation" />
-
-        <!--<EditText-->
-            <!--android:id="@+id/routeForm"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:ems="10"-->
-            <!--android:inputType="textPersonName"-->
-            <!--android:hint="@string/route_form_field" />-->
-
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="10dp"
-        android:layout_width="241dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
@@ -65,7 +40,7 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+            app:srcCompat="@drawable/ic_access_time_black_24dp"/>
 
         <EditText
             android:id="@+id/timeForm"
@@ -87,9 +62,10 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_view" />
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_add_circle_outline_black_24dp"/>
 
         <EditText
             android:id="@+id/contactForm"
@@ -100,6 +76,36 @@
             android:inputType="textPersonName"
             android:focusable="false"
             android:hint="@string/contact_form_field" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="249dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <!--<EditText-->
+        <!--android:id="@+id/routeForm"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:hint="@string/route_form_field" />-->
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_directions_run_black_24dp"/>
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_weight="3.10"/>
     </LinearLayout>
 
 

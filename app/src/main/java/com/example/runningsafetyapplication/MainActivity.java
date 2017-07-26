@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.net.URLEncoder;
@@ -221,10 +223,12 @@ public class MainActivity extends AppCompatActivity {
             String JsonResponse = null;
             String JsonDATA = params[0];
 
+//            http://10.0.2.2:3000/runs?
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try {
-                URL url = new URL("http://runsafe-app.vcc9pwmvpq.us-west-2.elasticbeanstalk.com/runs?");
+                URL url = new URL("http://10.0.2.2:3000/runs?");
                 System.out.println("&&&&&&^^^^");
                 System.out.println(url);
                 System.out.println("&&&&&&^^^^");

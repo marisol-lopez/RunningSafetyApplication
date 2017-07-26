@@ -177,11 +177,12 @@ public class EndRunActivity extends AppCompatActivity {
             System.out.println("selection");
             System.out.println(JsonDATA);
             System.out.println("selection");
+//            http://10.0.2.2:3000/runs/end_run?
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try {
-                URL url = new URL("http://runsafe-app.vcc9pwmvpq.us-west-2.elasticbeanstalk.com/runs/end_run?");
+                URL url = new URL("http://10.0.2.2:3000/runs/end_run?");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
